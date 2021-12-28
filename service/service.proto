@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+option go_package = "./service";
+
+package service;
+
+// protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative service/service.proto
+
+message JoinMessage {
+    string id = 1;
+    string port = 2;
+    int32 lamportTimestamp = 3;
+}
+
+message PublishMessage {
+    string id = 1;
+    string content = 2;
+    int32 lamportTimestamp = 3;
+}
+
+message BroadcastMessage {
+    string id = 1;
+    string content = 2;
+    int32 lamportTimestamp = 3;
+}
+
+message JoinResponse {
+    int32 lamportTimestamp = 1;
+}
+
+message Empty { }
+
+service Service {
+    rpc Join(JoinMessage) returns (JoinResponse);
+    rpc Publish(PublishMessage) returns (Empty);
+}
+
+service BroadcastService {
+    rpc Broadcast(BroadcastMessage) returns (Empty);
+}
